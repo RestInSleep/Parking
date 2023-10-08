@@ -15,6 +15,7 @@ int time_string_to_int(std::string time) {
 } 
 
 
+
 int main() {
 	const std::regex check_request("\\s*([A-Z][A-Z0-9]{2,10})\\s*((?:0?[89]|1[0-9])\\.(?:[0-5][0-9])|20\\.00)\\s*"); 
 	const std::regex add_request("\\s*([A-Z][A-Z0-9]{2,10})\\s*((?:0?[89]|1[0-9])\\.(?:[0-5][0-9])|20\\.00)\\s*((?:0?[89]|1[0-9])\\.(?:[0-5][0-9])|20\\.00)\\s*"); 
