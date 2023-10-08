@@ -12,7 +12,11 @@ int time_string_to_int(std::string time) {
 	int minutes = std::stoi(match[2]);
 	time_in_minutes = (hour-8) * 60 + minutes;
 	return time_in_minutes;
-} 
+}
+
+
+
+
 
 
 
