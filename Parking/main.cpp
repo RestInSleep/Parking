@@ -45,9 +45,8 @@ int main() {
     int line_number{1};
     int current_day{1};
     int current_time{};
-    while(!std::cin.eof()) {
-        std::string line;
-        std::getline(std::cin, line);
+    std::string line;
+    while(std::getline(std::cin, line)) {
         std::smatch match;
         // entering payment data
         if (std::regex_match(line, match, add_request)) {
