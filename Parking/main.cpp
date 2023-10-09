@@ -19,14 +19,21 @@ int time_string_to_int(std::string time) {
     time_in_minutes = (hour - 8) * 60 + minutes;
     return time_in_minutes;
 }
+
+
 void removeOutdatedCars(carBase& cars, int current_day,
                         int current_time) {
+    
+    std::vector<std::string> toRemove{};
     for (auto c : cars) {
         int end_day = std::get<2>(c.second);
         int end_time = std::get<3>(c.second);
         if (current_day > end_day ||(current_day == end_day && current_time > end_time)) {
-            cars.erase(c.first);
+            toRemove.push_back(c.first);
         }
+    }
+    for (std::string name : toRemove) {
+        cars.erase(name);
     }
 }
 bool atLeastTenMinutes(int begin_time, int end_time) {
