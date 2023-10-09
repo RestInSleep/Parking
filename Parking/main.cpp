@@ -6,7 +6,6 @@
 
 
 using carBase = std::unordered_map<std::string, std::tuple<int, int, int,int>>;
-using iterator = std::unordered_map<std::string, std::tuple<int, int, int,int>>::iterator;
 //start day, start time, end day, end time
 
 int time_string_to_int(std::string time) {
