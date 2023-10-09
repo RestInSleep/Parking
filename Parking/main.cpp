@@ -21,11 +21,11 @@ int time_string_to_int(std::string time) {
 }
 void removeOutdatedCars(carBase& cars, int current_day,
                         int current_time) {
-    for (iterator i = cars.begin(); i != cars.end(); i++) {
-        int end_day = std::get<2>(i->second);
-        int end_time = std::get<3>(i->second);
+    for (auto c : cars) {
+        int end_day = std::get<2>(c.second);
+        int end_time = std::get<3>(c.second);
         if (current_day > end_day ||(current_day == end_day && current_time > end_time)) {
-            cars.erase(i->first);
+            cars.erase(c.first);
         }
     }
 }
