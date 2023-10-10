@@ -91,7 +91,10 @@ int main() {
                 else {
                     int current_end_time{cars[name].first};
                     bool current_if_removed_tomorrow{cars[name].second};
-                    if ((current_if_removed_tomorrow == does_it_end_tomorrow && current_end_time < end) || (current_if_removed_tomorrow  && !does_it_end_tomorrow)) {
+                    if ((current_if_removed_tomorrow == does_it_end_tomorrow
+                         && current_end_time < end)
+                        || (current_if_removed_tomorrow
+                            && !does_it_end_tomorrow)) {
                         cars[name] = std::make_pair(end, does_it_end_tomorrow);
                     }
                 }
