@@ -73,7 +73,7 @@ int main() {
             
             int begin = time_string_to_int(match[2]);
             if (current_time > begin) {
-                            remove_outdated_cars(cars);
+                remove_outdated_cars(cars);
             }
             current_time = begin;
             bool does_it_end_tomorrow = false;
@@ -95,8 +95,8 @@ int main() {
                     bool current_if_removed_tomorrow{cars[name].second};
                     if ((current_if_removed_tomorrow == does_it_end_tomorrow
                          && current_end_time < end)
-                        || (current_if_removed_tomorrow
-                            && !does_it_end_tomorrow)) {
+                        || (!current_if_removed_tomorrow
+                            && does_it_end_tomorrow)) {
                         cars[name] = std::make_pair(end, does_it_end_tomorrow);
                     }
                 }
