@@ -65,7 +65,7 @@ int main() {
         
         std::smatch match{};
        
-        // entering payment data
+        // Entering payment data.
         if (std::regex_match(line, match, add_request)) {
             std::string name = match[1];
             
@@ -89,7 +89,11 @@ int main() {
                     cars.insert(std::make_pair(name, time_data));
                 }
                 else {
-                    cars[name] = std::make_pair(end, does_it_end_tomorrow);
+                    int current_end_time{cars[name].first};
+                    bool current_if_removed_tomorrow{cars[name].second};
+                    if ((current_if_removed_tomorrow == does_it_end_tomorrow && current_end_time < end) || (current_if_removed_tomorrow  && !does_it_end_tomorrow)) {
+                        cars[name] = std::make_pair(end, does_it_end_tomorrow);
+                    }
                 }
             }
             else {
@@ -97,7 +101,7 @@ int main() {
             }
         }
         
-        // checking payment data
+        // Checking payment data.
         else if (std::regex_match(line, match, check_request)) {
             std::string name = match[1];
             int check_time = time_string_to_int(match[2]);
@@ -120,7 +124,7 @@ int main() {
                 }
             }
         }
-       // unidentified input
+       // Unidentified input.
         else {
             std::cerr << "ERROR " << line_number << '\n';
         }
