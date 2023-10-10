@@ -53,8 +53,10 @@ int main() {
     
     // Regular expressions for identyfing payment for the parked car
     // and checking its status.
-    const std::regex check_request{"\\s*([A-Z][A-Z0-9]{2,10})\\s*((?:0?[89]|1[0-9])\\.(?:[0-5][0-9])|20\\.00)\\s*"};
-    const std::regex add_request{"\\s*([A-Z][A-Z0-9]{2,10})\\s*((?:0?[89]|1[0-9])\\.(?:[0-5][0-9])|20\\.00)\\s*((?:0?[89]|1[0-9])\\.(?:[0-5][0-9])|20\\.00)\\s*"};
+    std::string id = "([A-Z][A-Z0-9]{2,10})"; 
+    std::string time = "((?:0?[89]|1[0-9])\\.(?:[0-5][0-9])|20\\.00)";
+    const std::regex check_request{"\\s*"+ id + "\\s*" + time +"\\s*"};
+    const std::regex add_request{"\\s*" + id + "\\s*" + time + "\\s*" + time +"\\s*"};
     
     carBase cars{};
     int line_number{1};
