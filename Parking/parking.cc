@@ -7,45 +7,52 @@
 
 // Key: car plate, Values: end time in minutes and boolean whether the
 // car is to be removed the next day (not as current day changes).
-using carBase = std::unordered_map<std::string, std::pair<int, bool>>;
+using car_base = std::unordered_map<std::string, std::pair<int, bool>>;
 
-// Function converting string representing an hour, e.g. "17.45"
-// to number of minutes since 8.00.
-int time_string_to_int(std::string time) {
-    int time_in_minutes{};
-    const std::regex hours_and_minutes{"([1-9][0-9]|0?[0-9])\\.([0-9][0-9])"};
-    std::smatch match{};
-    std::regex_search(time, match, hours_and_minutes);
-    int hour = std::stoi(match[1]);
-    int minutes = std::stoi(match[2]);
-    time_in_minutes = (hour - 8) * 60 + minutes;
-    return time_in_minutes;
-}
 
-// Function that removes cars which are unpaid for from stored data.
-// This should only be called as day changes.
-void remove_outdated_cars(carBase& cars) {
-    std::vector<std::string> to_remove{};
-    for (auto c : cars) {
-            if (!c.second.second) {
-                to_remove.push_back(c.first);
-            }
-            else {
-                c.second.second = false;
-            }
-    }
-    for (std::string name : to_remove) {
-        cars.erase(name);
-    }
-}
 
-// Function checking if the car request satisfies the
-// 10-minutes-minimum rule.
-bool at_least_ten_minutes(int begin_time, int end_time) {
-    if (begin_time <= end_time) {
-        return end_time - begin_time >= 10;
+namespace {
+
+    // Function converting string representing an hour, e.g. "17.45"
+    // to number of minutes since 8.00.
+    int time_string_to_int(const std::string& time) {
+        int time_in_minutes{};
+        const std::regex hours_and_minutes{"([1-9][0-9]|0?[0-9])\\.([0-9][0-9])"};
+        std::smatch match{};
+        std::regex_search(time, match, hours_and_minutes);
+        int hour = std::stoi(match[1]);
+        int minutes = std::stoi(match[2]);
+        time_in_minutes = (hour - 8) * 60 + minutes;
+        return time_in_minutes;
     }
-    return end_time - begin_time + 60 * 12 >= 10;
+
+
+    // Function that removes cars which are unpaid for from stored data.
+    // This should only be called as day changes.
+    void remove_outdated_cars(car_base& cars) {
+        std::vector<std::string> to_remove{};
+        for (auto c : cars) {
+                if (!c.second.second) {
+                    to_remove.push_back(c.first);
+                }
+                else {
+                    c.second.second = false;
+                }
+        }
+        for (std::string name : to_remove) {
+            cars.erase(name);
+        }
+    }
+
+
+    // Function checking if the car request satisfies the
+    // 10-minutes-minimum rule.
+    bool at_least_ten_minutes(int begin_time, int end_time) {
+        if (begin_time <= end_time) {
+            return end_time - begin_time >= 10;
+        }
+        return end_time - begin_time + 60 * 12 >= 10;
+    }
 }
 
 
@@ -58,7 +65,7 @@ int main() {
     const std::regex check_request{"\\s*"+ id + "\\s+" + time +"\\s*"};
     const std::regex add_request{"\\s*" + id + "\\s+" + time + "\\s+" + time +"\\s*"};
     
-    carBase cars{};
+    car_base cars{};
     int line_number{1};
     int current_time{};
     std::string line;
