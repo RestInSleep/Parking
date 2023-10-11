@@ -55,8 +55,8 @@ int main() {
     // and checking its status.
     std::string id = "([A-Z][A-Z0-9]{2,10})"; 
     std::string time = "((?:0?[89]|1[0-9])\\.(?:[0-5][0-9])|20\\.00)";
-    const std::regex check_request{"\\s*"+ id + "\\s*" + time +"\\s*"};
-    const std::regex add_request{"\\s*" + id + "\\s*" + time + "\\s*" + time +"\\s*"};
+    const std::regex check_request{"\\s*"+ id + "\\s+" + time +"\\s*"};
+    const std::regex add_request{"\\s*" + id + "\\s+" + time + "\\s+" + time +"\\s*"};
     
     carBase cars{};
     int line_number{1};
