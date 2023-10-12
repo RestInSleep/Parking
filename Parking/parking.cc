@@ -12,12 +12,11 @@ using car_base = std::unordered_map<std::string, std::pair<int, bool>>;
 
 
 namespace {
-
+    const std::regex hours_and_minutes{"([1-9][0-9]|0?[0-9])\\.([0-9][0-9])"};
     // Function converting string representing an hour, e.g. "17.45"
     // to number of minutes since 8.00.
     int32_t time_string_to_int(const std::string& time) {
         int32_t time_in_minutes{};
-        const std::regex hours_and_minutes{"([1-9][0-9]|0?[0-9])\\.([0-9][0-9])"};
         std::smatch match{};
         std::regex_search(time, match, hours_and_minutes);
         int32_t hour = std::stoi(match[1]);
@@ -36,7 +35,7 @@ namespace {
                     to_remove.push_back(c.first);
                 }
                 else {
-                    c.second.second = false;
+                    cars[c.first].second = false;
                 }
         }
         for (std::string name : to_remove) {
@@ -46,10 +45,10 @@ namespace {
 
 
     // Function checking if the car request satisfies the
-    // 10-minutes-minimum rule.
-    bool at_least_ten_minutes(int32_t begin_time, int32_t end_time) {
+    // 10-minutes-minimum rule and is less than 12 hours (only edge case is 8.00 - 20.00).
+    bool is_time_interval_good(int32_t begin_time, int32_t end_time) {
         if (begin_time <= end_time) {
-            return end_time - begin_time >= 10;
+            return end_time - begin_time >= 10 && end_time - begin_time < 60 * 12;
         }
         return end_time - begin_time + 60 * 12 >= 10;
     }
@@ -78,18 +77,17 @@ int32_t main() {
         if (std::regex_match(line, match, add_request)) {
             std::string name = match[1];
             
-            int32_t begin = time_string_to_int(match[2]);
-            if (current_time > begin) {
-                remove_outdated_cars(cars);
-            }
-            current_time = begin;
-            bool does_it_end_tomorrow = false;
+            int32_t begin = time_string_to_int(match[2]); 
             int32_t end = time_string_to_int(match[3]);
-            if (end < begin) {
-                does_it_end_tomorrow = true;
-            }
-            
-            if (at_least_ten_minutes(begin, end)) {
+            if (is_time_interval_good(begin, end)) {
+                if (current_time > begin) {
+                    remove_outdated_cars(cars);
+                }
+                bool does_it_end_tomorrow = false;
+                if (end < begin) {
+                    does_it_end_tomorrow = true;
+                }
+                current_time = begin;
                 std::cout << "OK " << line_number << '\n';
                 int32_t is_the_car_in_system = static_cast<int>(cars.count(name));
                 if (is_the_car_in_system == 0) {
@@ -128,7 +126,7 @@ int32_t main() {
             else {
                 int32_t end_time = cars[name].first;
                 bool does_it_end_tomorrow = cars[name].second;
-                if (does_it_end_tomorrow || current_time < end_time) {
+                if (does_it_end_tomorrow || current_time <= end_time) {
                     std::cout << "YES " << line_number << '\n';
                 }
                 else {
