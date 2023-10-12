@@ -7,7 +7,7 @@
 
 // Key: car plate, Values: end time in minutes and boolean whether the
 // car is to be removed the next day (not as current day changes).
-using car_base = std::unordered_map<std::string, std::pair<int, bool>>;
+using car_base = std::unordered_map<std::string, std::pair<int32_t, bool>>;
 
 
 
