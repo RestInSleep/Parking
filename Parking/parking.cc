@@ -89,8 +89,7 @@ int32_t main() {
                 }
                 current_time = begin;
                 std::cout << "OK " << line_number << '\n';
-                int32_t is_the_car_in_system = static_cast<int>(cars.count(name));
-                if (is_the_car_in_system == 0) {
+                if (cars.count(name) == 0) {
                     std::pair<int, bool> time_data =
                     {end, does_it_end_tomorrow};
                     cars.insert(std::make_pair(name, time_data));
@@ -119,8 +118,7 @@ int32_t main() {
                 remove_outdated_cars(cars);
             }
             current_time = check_time;
-            int32_t is_the_car_in_system = static_cast<int>(cars.count(name));
-            if (is_the_car_in_system == 0) {
+            if (cars.count(name) == 0) {
                 std::cout << "NO " << line_number << '\n';
             }
             else {
